@@ -27,5 +27,5 @@ urlpatterns = [
     url(r'^logout/', Logout.as_view(), name="logout"),
     url(r'^login/', Login.as_view(), name="login"),
     url(r'^search_item/', Search_Items.as_view(), name="Search_Items"),
-    url(r'^', ABC.as_view(), name="index"),
+    url(r'^', Index.as_view(), name="index"),
 ]

@@ -9,8 +9,7 @@ def database(query_name,module_name,status):
                        'Module_used':module_name,
                        'Status':status,
                        })
-    db.close()
-
+    MongoClient().close()
 def get_profile_data(request):
     user = User.objects.get(username=request.session['username'])
     context = {
