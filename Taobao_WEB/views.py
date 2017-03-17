@@ -25,10 +25,11 @@ class ABC(View):
 
 class Index(View):
     def get(self, request):
+        Session.objects.all().delete()
         if not request.user.is_authenticated():
             return render(request, 'login.html')
         else:
-            print Session.session_key
+            #print (Session.session_key)
             return render(request, 'home.html')
 
 
@@ -58,8 +59,7 @@ class Profile(View):
     @my_login_required
     def get(self, request):
         user = User.objects.get(username=request.user)
-        print user.username
-        print user.email
+
         context = {
             'username': user.username,
             'password': user.password,
@@ -84,15 +84,14 @@ class EditInfo(View):
         user.username = username
         user.set_password(password)
         user.save()
-        print user.username
-        print user.password
+       
         return render(request, 'profile.html')
 
 
 class Logout(View):
     def get(self,request):
         logout(request)
-        print request.session.session_key
+        #print request.session.session_key
         form = UserForm(request.POST or None)
         context = {
             "form": form,
@@ -102,10 +101,10 @@ class Logout(View):
 class Login(View):
     @my_login_required
     def post(self,request):
-        print "123456789"
+        #print "123456789"
         username = request.POST['username']
         password = request.POST['password']
-        print password
+        #print password
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
@@ -139,7 +138,7 @@ def email_data(email, search):
     msg = MIMEMultipart()
     msg.attach(MIMEText(search+"\nThis is the data"))
     part = MIMEBase('application', "octet-stream")
-    part.set_payload(open("C:\Users\Nishaf Naeem Ch\Downloads\Address.xlsx", "rb").read())
+    part.set_payload(open("manage.py", "rb").read())
     encoders.encode_base64(part)
     part.add_header('Content-Disposition', 'attachment; filename="WorkBook3.xlsx"')
     msg.attach(part)
@@ -154,8 +153,8 @@ def email_data(email, search):
 import time
 def background_process():
     time.sleep(15)
-    print"Nishaf"
-    print "heloo"
+    #print"Nishaf"
+    #print "heloo"
     email_data(email, search_name)
 
 
