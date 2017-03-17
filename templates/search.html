@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<script>
+        function validateEmail(email) {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        }
+        function EmailCheck() {
+            if(!validateEmail(document.getElementById('email').value)) {
+                alert("Email not valid");
+                return false;
+            }
+        }
+
+</script>
+    <div class=" col-md-4 col-md-offset-4">
+            <h2 class="form-signin-heading" style="margin-top: 100px; text-align: center">The results will be sent to you via email.</h2>
+            <h4  style="margin-top: 100px; text-align: center">Please provide the email here</h4>
+          <form class="form-signin" action="{% url 'results' %}" onsubmit="return EmailCheck()" method="post">{% csrf_token %}
+                <div style="margin-top: 50px;" >
+                    <label for="inputName" class="sr-only">Email address</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="username" required="">
+                    <button class="btn btn-lg btn-primary btn-block" name="get_email" type="submit">Submit</button>
+                </div>
+          </form>
+        </div>
+{% endblock %}

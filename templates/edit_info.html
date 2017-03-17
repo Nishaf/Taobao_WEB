@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <script>
+     function CheckFunc(){
+         var username = document.getElementById('username').value;
+         var password = document.getElementById('password').value;
+         if(password.length < 8){
+             alert("Password should be minimum 8 characters");
+             return false;
+         }
+     }
+    </script>
+
+
+<br><br>
+<div style="margin-left: 250px;">
+  <div class="row">
+    <div class="col-md-9">
+      <div class="panel panel-default">
+        <div class="panel-body" >
+          <div class="row">
+            <div class="col-md-12 lead">Edit Profile<hr></div>
+          </div>
+          <div class="row">
+			<div class="col-md-4 text-center">
+              <img class="img-circle avatar avatar-original" style="-webkit-user-select:none;
+              display:block; margin:auto;" src="http://robohash.org/sitsequiquia.png?size=120x120">
+            </div>
+              <div class="row">
+                <div class="col-md-6">
+
+                <form class="form-signin" action="{% url 'edit_info' %}" onsubmit="return CheckFunc()" method="post">{% csrf_token %}
+                  <span class="text-muted">New Username:</span>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="username" required=""><br>
+                  <span class="text-muted">New Password</span>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="username" required="">
+                    <br><br>
+                  <button class="btn btn-lg btn-primary btn-block" name="edit_info" type="submit">Submit</button>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
