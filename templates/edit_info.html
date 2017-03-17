@@ -31,10 +31,14 @@
                 <div class="col-md-6">
 
                 <form class="form-signin" action="{% url 'edit_info' %}" onsubmit="return CheckFunc()" method="post">{% csrf_token %}
-                  <span class="text-muted">New Username:</span>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="username" required=""><br>
+                  <span class="text-muted">First_Name:</span>
+                    <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name" required=""><br>
+                  <span class="text-muted">Last_Name:</span>
+                    <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name" required=""><br>
+                  <span class="text-muted">Email:</span>
+                    <input type="text" id="email" name="email" class="form-control" placeholder="Email" required=""><br>
                   <span class="text-muted">New Password</span>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="username" required="">
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">
                     <br><br>
                   <button class="btn btn-lg btn-primary btn-block" name="edit_info" type="submit">Submit</button>
                 </form>

@@ -13,10 +13,13 @@ import threading
 from django.contrib.auth.decorators import login_required
 from .decorator import my_login_required
 from django.contrib.sessions.models import Session
-
-
+from Taobao_WEB.Database import *
 search_name = ""
 email = ""
+
+
+
+
 
 class ABC(View):
     def get(self, request):
@@ -44,31 +47,25 @@ class Search_Results(View):
         if 'search_name' in request.POST:
             global search_name
             search_name = request.POST['search']
-            return render(request, 'search.html')
+            print(request.session['username'])
+            user = User.objects.get(username=request.session['username'])
+            print(user.email)
+            email_data(user.email,search_name)
+            return render(request, 'results.html')
 
-        elif 'get_email' in request.POST:
+        '''elif 'get_email' in request.POST:
             global email
             email = request.POST['email']
             t = threading.Thread(target=background_process, args={}, kwargs={})
             t.start()
-            return render(request, 'results.html')
+            return render(request, 'results.html')'''
 
 
 class Profile(View):
     @my_login_required
     def get(self, request):
         user = User.objects.get(username=request.user)
-
-        context = {
-            'username': user.username,
-            'password': user.password,
-            'email': user.email,
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-            'date_joined': user.date_joined
-
-        }
-        return render(request, 'profile.html',context)
+        return render(request, 'profile.html',context=get_profile_data(request))
 
 class EditInfo(View):
     @my_login_required
@@ -77,37 +74,25 @@ class EditInfo(View):
 
     @my_login_required
     def post(self, request):
-        username = request.POST['username']
-        password = request.POST['password']
-        user = User.objects.get(username=request.user)
-        user.username = username
-        user.set_password(password)
-        user.save()
-       
-        return render(request, 'profile.html')
+        save_details(request)
+        return render(request, 'profile.html',context=get_profile_data(request))
 
 
 class Logout(View):
     def get(self,request):
         logout(request)
-        #print request.session.session_key
-        form = UserForm(request.POST or None)
-        context = {
-            "form": form,
-        }
         return redirect('index')
 
 class Login(View):
     @my_login_required
     def post(self,request):
-        #print "123456789"
         username = request.POST['username']
         password = request.POST['password']
-        #print password
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
+                request.session['username'] = user.username
                 return render(request, 'home.html')
             else:
                 return render(request, 'login.html', {'error_message': 'Invalid login'})
@@ -127,7 +112,7 @@ class SignUp(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return render(request, 'home.html', {})
+                    return render(request, 'home.html')
         context = {
             "form": form,
         }
@@ -155,9 +140,6 @@ def background_process():
     #print"Nishaf"
     #print "heloo"
     email_data(email, search_name)
-
-
-
 
 
 
