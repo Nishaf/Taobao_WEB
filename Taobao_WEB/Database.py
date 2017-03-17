@@ -4,11 +4,12 @@ import time
 
 def database(query_name,module_name,status):
     db = MongoClient()['Project']
-    db.history.insert({'Query Name':'Nishaf',
+    db.history.insert({'Query Name':query_name,
                        'TimeStamp':time.localtime(),
                        'Module_used':module_name,
-                       'Status':status
+                       'Status':status,
                        })
+    db.close()
 
 def get_profile_data(request):
     user = User.objects.get(username=request.session['username'])

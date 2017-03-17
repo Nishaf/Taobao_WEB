@@ -23,7 +23,8 @@ email = ""
 
 class ABC(View):
     def get(self, request):
-        Session.objects.all().delete()
+        database('Nishaf','Taobao','Completed')
+
 
 
 class Index(View):
