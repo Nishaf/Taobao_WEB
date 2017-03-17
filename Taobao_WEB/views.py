@@ -25,7 +25,6 @@ class ABC(View):
 
 class Index(View):
     def get(self, request):
-        Session.objects.all().delete()
         if not request.user.is_authenticated():
             return render(request, 'login.html')
         else:
